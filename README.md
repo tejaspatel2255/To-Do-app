@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # todo_app
 
 A new Flutter project.
@@ -18,4 +17,3 @@ For help getting started with Flutter development, view the
 samples, guidance on mobile development, and a full API reference.
 =======
 # To-Do-app
->>>>>>> bf9b52ed2ab0428bafcab4fb68772fe6aace7c9e
