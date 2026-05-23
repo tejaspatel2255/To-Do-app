@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'providers/todo_provider.dart';
+import 'screens/splash_screen.dart';
 
 void main() {
-  runApp(const TodoApp());
-}
-
-class Todo {
-  String id;
-  String title;
-  String description;
-  bool isCompleted;
-
-  Todo({
-    required this.id,
-    required this.title,
-    this.description = '',
-    this.isCompleted = false,
-  });
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => TodoProvider(),
+      child: const TodoApp(),
+    ),
+  );
 }
 
 class TodoApp extends StatelessWidget {
@@ -24,216 +20,40 @@ class TodoApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'TODO App',
+      title: 'TaskFlow',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const TodoHomePage(),
-    );
-  }
-}
-
-class TodoHomePage extends StatefulWidget {
-  const TodoHomePage({super.key});
-
-  @override
-  State<TodoHomePage> createState() => _TodoHomePageState();
-}
-
-class _TodoHomePageState extends State<TodoHomePage> {
-  final List<Todo> _todos = [];
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _descriptionController = TextEditingController();
-
-  void _addTodo() {
-    if (_titleController.text.isNotEmpty) {
-      setState(() {
-        _todos.add(Todo(
-          id: DateTime.now().toString(),
-          title: _titleController.text,
-          description: _descriptionController.text,
-        ));
-      });
-      _titleController.clear();
-      _descriptionController.clear();
-      Navigator.of(context).pop();
-    }
-  }
-
-  void _editTodo(Todo todo) {
-    _titleController.text = todo.title;
-    _descriptionController.text = todo.description;
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Edit Todo'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Title'),
-            ),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
-          ],
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF6A11CB)),
+        useMaterial3: true,
+        textTheme: GoogleFonts.outfitTextTheme(Theme.of(context).textTheme),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.black87,
+          elevation: 0,
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                todo.title = _titleController.text;
-                todo.description = _descriptionController.text;
-              });
-              _titleController.clear();
-              _descriptionController.clear();
-              Navigator.of(context).pop();
-            },
-            child: const Text('Save'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _deleteTodo(String id) {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Delete Todo'),
-        content: const Text('Are you sure you want to delete this todo?'),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: () {
-              setState(() {
-                _todos.removeWhere((todo) => todo.id == id);
-              });
-              Navigator.of(context).pop();
-            },
-            child: const Text('Delete'),
-          ),
-        ],
-      ),
-    );
-  }
-
-  void _toggleCompletion(String id) {
-    setState(() {
-      final todo = _todos.firstWhere((todo) => todo.id == id);
-      todo.isCompleted = !todo.isCompleted;
-    });
-  }
-
-  void _showAddTodoDialog() {
-    showDialog(
-      context: context,
-      builder: (context) => AlertDialog(
-        title: const Text('Add Todo'),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            TextField(
-              controller: _titleController,
-              decoration: const InputDecoration(labelText: 'Title'),
-            ),
-            TextField(
-              controller: _descriptionController,
-              decoration: const InputDecoration(labelText: 'Description'),
-            ),
-          ],
+        scaffoldBackgroundColor: const Color(0xFFF3F4F6),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFF6A11CB),
+          foregroundColor: Colors.white,
         ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(context).pop(),
-            child: const Text('Cancel'),
-          ),
-          TextButton(
-            onPressed: _addTodo,
-            child: const Text('Add'),
-          ),
-        ],
       ),
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('TODO App'),
+      darkTheme: ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: ColorScheme.fromSeed(
+          seedColor: const Color(0xFF6A11CB),
+          brightness: Brightness.dark,
+        ),
+        useMaterial3: true,
+        textTheme: GoogleFonts.outfitTextTheme(ThemeData.dark().textTheme),
+        scaffoldBackgroundColor: const Color(0xFF111827),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
       ),
-      body: _todos.isEmpty
-          ? const Center(
-              child: Text('No todos yet. Add one!'),
-            )
-          : ListView.builder(
-              itemCount: _todos.length,
-              itemBuilder: (context, index) {
-                final todo = _todos[index];
-                return ListTile(
-                  leading: Checkbox(
-                    value: todo.isCompleted,
-                    onChanged: (value) => _toggleCompletion(todo.id),
-                  ),
-                  title: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        todo.title,
-                        style: TextStyle(
-                          decoration: todo.isCompleted
-                              ? TextDecoration.lineThrough
-                              : TextDecoration.none,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      if (todo.description.isNotEmpty)
-                        Padding(
-                          padding: const EdgeInsets.only(top: 4.0),
-                          child: Text(
-                            todo.description,
-                            style: TextStyle(
-                              decoration: todo.isCompleted
-                                  ? TextDecoration.lineThrough
-                                  : TextDecoration.none,
-                              fontSize: 14,
-                              color: Colors.grey[600],
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  trailing: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.edit),
-                        onPressed: () => _editTodo(todo),
-                      ),
-                      IconButton(
-                        icon: const Icon(Icons.delete),
-                        onPressed: () => _deleteTodo(todo.id),
-                      ),
-                    ],
-                  ),
-                );
-              },
-            ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddTodoDialog,
-        tooltip: 'Add Todo',
-        child: const Icon(Icons.add),
-      ),
+      themeMode: ThemeMode.system,
+      home: const SplashScreen(),
     );
   }
 }

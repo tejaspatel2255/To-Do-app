@@ -1,52 +1,47 @@
-# ✅ To-Do App (Flutter)
+# TaskFlow
 
-## 📌 Overview
-This is a simple and efficient **To-Do Application** built using Flutter.  
-The app helps users manage their daily tasks by allowing them to add, update, and delete tasks easily.
+![TaskFlow Logo](assets/logo.png)
+
+A sleek, premium, and highly responsive Task Management (TODO) application built with Flutter. 
+TaskFlow is designed with modern aesthetics (glassmorphism, gradients, smooth animations) to help you organize your life effortlessly.
+
+## ✨ Features
+- **Local Persistence**: Tasks are securely saved to your local device using `shared_preferences`.
+- **Advanced Task Management**: Categorize your tasks (Work, Personal, Shopping, etc.) and assign due dates.
+- **Dynamic Filtering**: Quickly filter tasks by All, Active, or Completed status.
+- **Modern UI/UX**: Enjoy smooth staggered animations, custom bottom sheets, swipe-to-delete, and a beautiful Animated Splash Screen.
+- **Adaptive Theming**: Full support for both Light and Dark modes.
+
+## 🚀 Getting Started
+
+### Prerequisites
+- Flutter SDK (latest version recommended)
+- Android Studio / Xcode (for mobile deployment)
+- Chrome (for web deployment)
+
+### Installation
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/tejaspatel2255/To-Do-app.git
+   ```
+2. Navigate to the project directory:
+   ```bash
+   cd To-Do-app
+   ```
+3. Get the dependencies:
+   ```bash
+   flutter pub get
+   ```
+4. Run the app:
+   ```bash
+   flutter run
+   ```
+
+## 🛠 Tech Stack
+- **Framework**: Flutter
+- **State Management**: Provider
+- **Storage**: Shared Preferences
+- **Styling**: Google Fonts, Flutter Animate
 
 ---
-
-## 🎯 Features
-- ➕ Add new tasks  
-- ✏️ Edit tasks  
-- ✅ Mark tasks as completed  
-- 🗑️ Delete tasks  
-- 📋 View all tasks in a list  
-- ⚡ Simple and clean UI  
-
----
-
-## 🛠️ Tech Stack
-- Flutter  
-- Dart  
-- Material UI  
-
----
-
-## 📂 Project Structure
-
-todo_app/
-├── lib/
-├── android/
-├── ios/
-├── pubspec.yaml
-└── README.md
-
-
----
-
-## ⚙️ Installation & Setup
-
-### Clone the repository
-```bash
-git clone https://github.com/tejaspatel2255/To-Do-app.git
-cd To-Do-app
-Install dependencies
-flutter pub get
-Run the app
-flutter run
-🚀 Future Enhancements
-Add notifications/reminders
-Firebase integration
-Dark mode
-Task analytics
+*Developed with Flutter.*
